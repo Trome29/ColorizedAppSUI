@@ -8,14 +8,48 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var redValue = ""
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        ZStack {
+            Color(.black).ignoresSafeArea()
+            VStack(spacing: 20) {
+                RoundedRectangle(cornerRadius: 20)
+                    .frame(width: 350, height: 200)
+                    .foregroundColor(.red)
+                VStack(spacing: 20) {
+                    HStack {
+                        Text("Red")
+                            .foregroundColor(.white)
+                            .frame(width: 50)
+                        Slider(value: .constant(0.5))
+                        TextField("", text: $redValue)
+                            .textFieldStyle(.roundedBorder)
+                            .frame(width: 50)
+                    }
+                    HStack {
+                        Text("Green")
+                            .foregroundColor(.white)
+                            .frame(width: 50)
+                        Slider(value: .constant(0.5))
+                        TextField("", text: $redValue)
+                            .textFieldStyle(.roundedBorder)
+                            .frame(width: 50)
+                    }
+                    HStack {
+                        Text("Blue")
+                            .foregroundColor(.white)
+                            .frame(width: 50)
+                        Slider(value: .constant(0.5))
+                        TextField("", text: $redValue)
+                            .textFieldStyle(.roundedBorder)
+                            .frame(width: 50)
+                    }
+                }
+                Spacer()
+            }
+            .padding()
         }
-        .padding()
     }
 }
 
