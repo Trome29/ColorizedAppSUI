@@ -8,102 +8,50 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var redValue = Double(Int.random(in: 0...255))
-    @State private var greenValue = Double(Int.random(in: 0...255))
-    @State private var blueValue = Double(Int.random(in: 0...255))
-    //@State private var isUpDown = false
-    
-    //@FocusState var isInputActive: NameColor?
+    @State private var redValue = Double.random(in: 0...255)
+    @State private var greenValue = Double.random(in: 0...255)
+    @State private var blueValue = Double.random(in: 0...255)
     
     var body: some View {
         ZStack {
             Color(.black).ignoresSafeArea()
             VStack(spacing: 20) {
-                RectangleView(
-                    redValue: $redValue,
-                    greenValue: $greenValue,
-                    blueValue: $blueValue
+                ColorView(
+                    redValue: redValue,
+                    greenValue: greenValue,
+                    blueValue: blueValue
                 )
-                ColorView(value: $redValue)
-                ColorView(value: $greenValue)
-                ColorView(value: $blueValue)
-                
+                VStack {
+                    ColorizedView(value: $redValue, color: .red)
+                    ColorizedView(value: $greenValue, color: .green)
+                    ColorizedView(value: $blueValue, color: .blue)
+                }
+                .keyboardType(.numberPad)
+                .toolbar {
+                        ToolbarItemGroup(placement: .keyboard) {
+                            Button {
+                            } label: { Image(systemName: "chevron.up") }
+                            Button {
+                            } label: { Image(systemName: "chevron.down") }
+                            
+                            Spacer()
+                            
+                            Button("Done") {
+                            }
+                        }
+                    }
                 Spacer()
-                
             }
             .padding()
         }
     }
 }
-//
-//enum NameColor {
-//    case red, green, blue
-//}
 
-struct RectangleView: View {
-    @Binding var redValue: Double
-    @Binding var greenValue: Double
-    @Binding var blueValue: Double
-    
-    var body: some View {
-        RoundedRectangle(cornerRadius: 20)
-            .frame(width: 350, height: 200)
-            .foregroundColor(Color(
-                red: redValue / 255,
-                green: greenValue / 255,
-                blue: blueValue / 255
-            ))
-            .overlay(
-                RoundedRectangle(cornerRadius: 20)
-                .stroke(Color.white, lineWidth: 4)
-            )
-    }
+enum Colors {
+    case red, green, blue
 }
 
-struct ColorView: View {
-    @Binding var value: Double
-    
-    var body: some View {
-        HStack {
-            TextView(value: $value)
-            SliderView(value: $value)
-            TextfieldView(value: $value)
-        }
-    }
-}
-
-struct TextView: View {
-    @Binding var value: Double
-    
-    var body: some View {
-        Text("\(lround(value))")
-            .foregroundColor(.white)
-            .frame(width: 35, alignment: .leading)
-    }
-}
-
-struct SliderView: View {
-    @Binding var value: Double
-    
-    var body: some View {
-        Slider(value: $value, in: 0...255, step: 1)
-            .tint(.gray)
-    }
-}
-
-struct TextfieldView: View {
-    @Binding var value: Double
-    
-    var body: some View {
-        TextField("", value: $value, format: .number)
-            .frame(width: 45, height: 30)
-            .background(.white)
-            .cornerRadius(6)
-            .textFieldStyle(.roundedBorder)
-            .multilineTextAlignment(.trailing)
-    }
-}
-
+// MARK: - ContentViewPreviews
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
