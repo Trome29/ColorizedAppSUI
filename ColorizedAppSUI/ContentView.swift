@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var redValue = Double.random(in: 0...255)
-    @State private var greenValue = Double.random(in: 0...255)
-    @State private var blueValue = Double.random(in: 0...255)
+    @State private var redValue = Double(Int.random(in: 0...255))
+    @State private var greenValue = Double(Int.random(in: 0...255))
+    @State private var blueValue = Double(Int.random(in: 0...255))
     //@State private var isUpDown = false
     
     //@FocusState var isInputActive: NameColor?
@@ -53,6 +53,10 @@ struct RectangleView: View {
                 green: greenValue / 255,
                 blue: blueValue / 255
             ))
+            .overlay(
+                RoundedRectangle(cornerRadius: 20)
+                .stroke(Color.white, lineWidth: 4)
+            )
     }
 }
 
@@ -61,32 +65,20 @@ struct ColorView: View {
     
     var body: some View {
         HStack {
-            LabelView(value: $value)
+            TextView(value: $value)
             SliderView(value: $value)
             TextfieldView(value: $value)
         }
     }
 }
 
-struct TextfieldView: View {
-    @Binding var value: Double
-    
-    var body: some View {
-        TextField("", value: $value, format: .number)
-            .frame(width: 50, height: 30)
-            .background(.white)
-            .cornerRadius(6)
-            .textFieldStyle(.roundedBorder)
-    }
-}
-
-struct LabelView: View {
+struct TextView: View {
     @Binding var value: Double
     
     var body: some View {
         Text("\(lround(value))")
             .foregroundColor(.white)
-            .frame(width: 50)
+            .frame(width: 35, alignment: .leading)
     }
 }
 
@@ -95,7 +87,20 @@ struct SliderView: View {
     
     var body: some View {
         Slider(value: $value, in: 0...255, step: 1)
-            .tint(.black)
+            .tint(.gray)
+    }
+}
+
+struct TextfieldView: View {
+    @Binding var value: Double
+    
+    var body: some View {
+        TextField("", value: $value, format: .number)
+            .frame(width: 45, height: 30)
+            .background(.white)
+            .cornerRadius(6)
+            .textFieldStyle(.roundedBorder)
+            .multilineTextAlignment(.trailing)
     }
 }
 
