@@ -20,6 +20,7 @@ struct TextFieldView: View {
             .cornerRadius(6)
             .textFieldStyle(.roundedBorder)
             .multilineTextAlignment(.trailing)
+            .disableAutocorrection(true)
     }
     
     private func checkRange() {

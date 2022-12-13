@@ -47,10 +47,6 @@ struct ContentView: View {
     }
 }
 
-enum Colors {
-    case red, green, blue
-}
-
 // MARK: - ContentViewPreviews
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
