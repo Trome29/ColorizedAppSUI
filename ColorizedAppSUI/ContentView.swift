@@ -8,58 +8,71 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var redSliderValue = Double.random(in: 0...255)
-    @State private var greenSliderValue = Double.random(in: 0...255)
-    @State private var blueSliderValue = Double.random(in: 0...255)
-    @State private var isUpDown = false
+    @State private var redValue = Double.random(in: 0...255)
+    @State private var greenValue = Double.random(in: 0...255)
+    @State private var blueValue = Double.random(in: 0...255)
+    //@State private var isUpDown = false
     
-    @FocusState var isInputActive: NameColor?
+    //@FocusState var isInputActive: NameColor?
     
     var body: some View {
         ZStack {
             Color(.black).ignoresSafeArea()
             VStack(spacing: 20) {
-                RoundedRectangle(cornerRadius: 20)
-                    .frame(width: 350, height: 200)
-                    .foregroundColor(Color(
-                        red: redSliderValue / 255,
-                        green: greenSliderValue / 255,
-                        blue: blueSliderValue / 255
-                    ))
-                ColorView(value: $redSliderValue, text: "\(lround(redSliderValue))")
-                ColorView(value: $greenSliderValue, text: "\(lround(greenSliderValue))")
-                ColorView(value: $blueSliderValue, text: "\(lround(blueSliderValue))")
+                RectangleView(
+                    redValue: $redValue,
+                    greenValue: $greenValue,
+                    blueValue: $blueValue
+                )
+                ColorView(value: $redValue)
+                ColorView(value: $greenValue)
+                ColorView(value: $blueValue)
                 
                 Spacer()
+                
             }
             .padding()
         }
     }
 }
+//
+//enum NameColor {
+//    case red, green, blue
+//}
 
-enum NameColor {
-    case red, green, blue
+struct RectangleView: View {
+    @Binding var redValue: Double
+    @Binding var greenValue: Double
+    @Binding var blueValue: Double
+    
+    var body: some View {
+        RoundedRectangle(cornerRadius: 20)
+            .frame(width: 350, height: 200)
+            .foregroundColor(Color(
+                red: redValue / 255,
+                green: greenValue / 255,
+                blue: blueValue / 255
+            ))
+    }
 }
 
 struct ColorView: View {
     @Binding var value: Double
-    let text: String
     
     var body: some View {
         HStack {
             LabelView(value: $value)
             SliderView(value: $value)
-            TextfieldView(value: $value, text: text)
+            TextfieldView(value: $value)
         }
     }
 }
 
 struct TextfieldView: View {
     @Binding var value: Double
-    let text: String
     
     var body: some View {
-        TextField(text, value: $value, format: .number)
+        TextField("", value: $value, format: .number)
             .frame(width: 50, height: 30)
             .background(.white)
             .cornerRadius(6)
@@ -82,6 +95,7 @@ struct SliderView: View {
     
     var body: some View {
         Slider(value: $value, in: 0...255, step: 1)
+            .tint(.black)
     }
 }
 
