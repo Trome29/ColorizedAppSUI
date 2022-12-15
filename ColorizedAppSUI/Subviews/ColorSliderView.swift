@@ -22,11 +22,9 @@ struct ColorSliderView: View {
             
             Slider(value: $value, in: 0...255, step: 1)
                 .tint(color)
-                .onChange(of: value) { newValue in
-                    text = newValue.formatted()
-                }
+                .onChange(of: value) { text = $0.formatted() }
             
-            TextFieldView(textValue: $text, value: $value)
+            TextFieldView(text: $text, value: $value, action: checkValue)
                 .alert("Wrong format!", isPresented: $showAlert, actions: {}) {
                     Text("Please enter value from 0 to 255")
                 }
@@ -34,6 +32,16 @@ struct ColorSliderView: View {
         .onAppear {
             text = value.formatted()
         }
+    }
+    
+    private func checkValue() {
+        if let value = Int(text), (0...255).contains(value) {
+            self.value = Double(value)
+            return
+        }
+        showAlert.toggle()
+        value = 0
+        text = "0"
     }
 }
 
