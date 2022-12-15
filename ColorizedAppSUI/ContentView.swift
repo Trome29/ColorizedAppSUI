@@ -8,49 +8,46 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var redValue = Double.random(in: 0...255)
-    @State private var greenValue = Double.random(in: 0...255)
-    @State private var blueValue = Double.random(in: 0...255)
+    @State private var red = Double.random(in: 0...255).rounded()
+    @State private var green = Double.random(in: 0...255).rounded()
+    @State private var blue = Double.random(in: 0...255).rounded()
     
-    @FocusState var isEnter: Bool
-    @FocusState var color: Colors?
-    
-    @State private var alertPresented = false
-    @State private var isMove = false
+    @FocusState var isInputActive: Bool
     
     var body: some View {
         ZStack {
-            Color(.black).ignoresSafeArea()
+            Color(.black)
+                .ignoresSafeArea()
+                .onTapGesture {
+                    isInputActive = false
+                }
             VStack(spacing: 20) {
                 ColorView(
-                    redValue: redValue,
-                    greenValue: greenValue,
-                    blueValue: blueValue
+                    redValue: red,
+                    greenValue: green,
+                    blueValue: blue
                 )
                 VStack {
-                    ColorizedView(value: $redValue, color: .red)
-                        .focused($color, equals: .red)
-                    ColorizedView(value: $greenValue, color: .green)
-                        .focused($color, equals: .green)
-                    ColorizedView(value: $blueValue, color: .blue)
-                        .focused($color, equals: .blue)
+                    ColorSliderView(value: $red, color: .red)
+                    ColorSliderView(value: $green, color: .green)
+                    ColorSliderView(value: $blue, color: .blue)
                 }
-                .focused($isEnter)
+                .frame(height: 150)
+                .focused($isInputActive)
                 .toolbar {
                         ToolbarItemGroup(placement: .keyboard) {
+                            //Spacer()
                             Button {
-                                isMove = false
-                                check()
+                                isInputActive = false
+                                
                             } label: { Image(systemName: "chevron.up") }
                             Button {
-                                isMove = true
-                                check()
+                                isInputActive = true
+                                
                             } label: { Image(systemName: "chevron.down") }
-                            
                             Spacer()
-                            
                             Button("Done") {
-                                isEnter = false
+                                isInputActive = false
                             }
                         }
                     }
@@ -60,16 +57,6 @@ struct ContentView: View {
         }
     }
     
-    private func check() {
-        switch (color, isMove) {
-        case (.red, isMove):
-            color = isMove ? .green : .blue
-        case (.green, isMove):
-            color = isMove ? .blue : .red
-        default:
-            color = isMove ? .red : .green
-        }
-    }
 }
 
 // MARK: - ContentViewPreviews
@@ -77,8 +64,4 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
     }
-}
-
-enum Colors {
-    case red, green, blue
 }
