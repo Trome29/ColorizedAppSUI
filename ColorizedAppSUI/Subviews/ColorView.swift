@@ -8,27 +8,25 @@
 import SwiftUI
 
 struct ColorView: View {
-    let redValue: Double
-    let greenValue: Double
-    let blueValue: Double
+    
+    let red: Double
+    let green: Double
+    let blue: Double
     
     var body: some View {
-        Color(
-            red: redValue / 255,
-            green: greenValue / 255,
-            blue: blueValue / 255
-        )
+        Color(red: red / 255, green: green / 255, blue: blue / 255)
         .cornerRadius(20)
+        .frame(height: 150)
         .overlay(
             RoundedRectangle(cornerRadius: 20)
                 .stroke(.white, lineWidth: 4)
         )
-        .frame(height: 150)
+        
     }
 }
 
 struct ColorView_Previews: PreviewProvider {
     static var previews: some View {
-        ColorView(redValue: 0, greenValue: 50, blueValue: 100)
+        ColorView(red: 0, green: 50, blue: 100)
     }
 }
